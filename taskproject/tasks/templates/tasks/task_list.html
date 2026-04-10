@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Manager</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        form {
+            width: 40%;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        form input, form select, form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        hr {
+            width: 50%;
+            margin: 20px auto;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            width: 50%;
+            margin: auto;
+        }
+
+        li {
+            background: white;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        li span {
+            font-weight: bold;
+        }
+
+        a {
+            text-decoration: none;
+            margin-left: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        a[href*="complete"] {
+            background: #2196F3;
+            color: white;
+        }
+
+        a[href*="complete"]:hover {
+            background: #1976D2;
+        }
+
+        a[href*="delete"] {
+            background: #f44336;
+            color: white;
+        }
+
+        a[href*="delete"]:hover {
+            background: #d32f2f;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        .status {
+            margin-left: 10px;
+            font-size: 14px;
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Task Manager</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Add Task</button>
+</form>
+
+<hr>
+
+<ul>
+{% for task in tasks %}
+<li>
+    <span class="{% if task.completed %}completed{% endif %}">
+        {{ task.title }}
+    </span>
+
+    <div>
+        {% if task.completed %}
+            <span class="status">✔ Completed</span>
+        {% else %}
+            <a href="/complete/{{task.id}}/">Complete</a>
+        {% endif %}
+
+        <a href="/delete/{{task.id}}/">Delete</a>
+    </div>
+</li>
+{% endfor %}
+</ul>
+
+</body>
+</html>
